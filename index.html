@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cedar Havana</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <style>
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      background-color: #fafafa;
+      margin: 0;
+      padding: 0;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0 5px 0;
+      font-weight: 600;
+    }
+
+    .logo {
+      display: block;
+      margin: 10px auto;
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+
+    select, input {
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      max-width: 950px;
+      width: 90%;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-top: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      background: #fff;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #f3f3f3;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .half {
+      flex: 1;
+      min-width: 430px;
+    }
+
+    button {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-right: 10px;
+    }
+
+    .reset-btn {
+      background: #f44336;
+      color: white;
+    }
+
+    .add-btn {
+      background: #4caf50;
+      color: white;
+    }
+
+    .delete-btn {
+      background: #ff9800;
+      color: white;
+    }
+
+    .copy-area {
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      font-size: 14px;
+      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 12px;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <img src="Neil 3.png" alt="Cedar Havana Logo" class="logo" />
+  <h1>Cedar Havana Calculator</h1>
+
+  <div class="container">
+    <div class="row">
+      <div class="half">
+        <h3>CEDAR HAVANA</h3>
+        <table id="cedarTable">
+          <tr>
+            <th>POD QTY</th>
+            <th>DEV QTY</th>
+            <th>FREE DEVICE</th>
+          </tr>
+          <tr>
+            <td><input type="number" id="cedarPodQty" value="0"></td>
+            <td><input type="number" id="cedarDevQty" value="0"></td>
+            <td id="cedarFreeDev">0</td>
+          </tr>
+          <tr>
+            <th>POD COST</th>
+            <th>DEV COST</th>
+            <th>TOTAL COST</th>
+          </tr>
+          <tr>
+            <td id="cedarPodCost">0</td>
+            <td id="cedarDevCost">0</td>
+            <td id="cedarTotalCost">0</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="half">
+        <h3>MY CALCULATOR</h3>
+        <table id="myCalcTable">
+          <tr>
+            <th>ENTER POD QTY</th>
+            <th>POD PRICE</th>
+            <th>POD COST</th>
+          </tr>
+          <tr>
+            <td><input type="number" id="myPodQty" value="0"></td>
+            <td><input type="number" id="myPodPrice" value="0"></td>
+            <td id="myPodCost">0</td>
+          </tr>
+          <tr>
+            <th>ENTER DEV QTY</th>
+            <th>DEV PRICE</th>
+            <th>DEV COST</th>
+          </tr>
+          <tr>
+            <td><input type="number" id="myDevQty" value="0"></td>
+            <td><input type="number" id="myDevPrice" value="0"></td>
+            <td id="myDevCost">0</td>
+          </tr>
+          <tr>
+            <th></th><th>COMM</th><th>TOTAL COST</th>
+          </tr>
+          <tr>
+            <td></td>
+            <td id="myComm">0</td>
+            <td id="myTotalCost">0</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half">
+        <label>Product:</label>
+        <select id="productDropdown">
+          <option value="X-Ultra">X-Ultra</option>
+        </select>
+      </div>
+      <div class="half">
+        <button class="add-btn" onclick="addProduct()">+ Add Product</button>
+        <button class="delete-btn" onclick="deleteProduct()">Delete Product</button>
+        <button class="reset-btn" onclick="resetFields()">Reset</button>
+      </div>
+    </div>
+
+    <div id="overallTotals"></div>
+
+    <div class="copy-area">
+      <textarea id="copyText" readonly></textarea>
+    </div>
+    <button onclick="copyComputation()">Copy Computation</button>
+  </div>
+
+  <footer>Updated: Oct 28, 2025</footer>
+
+  <script>
+    let products = JSON.parse(localStorage.getItem('cedarProducts')) || {
+      "X-Ultra": { podPrice: 275, devPrice: 230 }
+    };
+    let currentProduct = "X-Ultra";
+
+    const dropdown = document.getElementById("productDropdown");
+    const cedarPodQty = document.getElementById("cedarPodQty");
+    const cedarDevQty = document.getElementById("cedarDevQty");
+    const cedarFreeDev = document.getElementById("cedarFreeDev");
+    const cedarPodCost = document.getElementById("cedarPodCost");
+    const cedarDevCost = document.getElementById("cedarDevCost");
+    const cedarTotalCost = document.getElementById("cedarTotalCost");
+
+    const myPodQty = document.getElementById("myPodQty");
+    const myPodPrice = document.getElementById("myPodPrice");
+    const myPodCost = document.getElementById("myPodCost");
+    const myDevQty = document.getElementById("myDevQty");
+    const myDevPrice = document.getElementById("myDevPrice");
+    const myDevCost = document.getElementById("myDevCost");
+    const myComm = document.getElementById("myComm");
+    const myTotalCost = document.getElementById("myTotalCost");
+
+    function updateDropdown() {
+      dropdown.innerHTML = "";
+      for (const key in products) {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = key;
+        dropdown.appendChild(opt);
+      }
+    }
+
+    function addProduct() {
+      const name = prompt("Enter Product Name (e.g. X-Aero)");
+      if (!name) return;
+      const podPrice = parseFloat(prompt("Enter Cedar Havana Pod Price")) || 0;
+      const devPrice = parseFloat(prompt("Enter Cedar Havana Device Price")) || 0;
+      products[name] = { podPrice, devPrice };
+      localStorage.setItem("cedarProducts", JSON.stringify(products));
+      updateDropdown();
+      dropdown.value = name;
+      currentProduct = name;
+    }
+
+    function deleteProduct() {
+      const name = dropdown.value;
+      if (name === "X-Ultra") return alert("You can’t delete the default X-Ultra");
+      delete products[name];
+      localStorage.setItem("cedarProducts", JSON.stringify(products));
+      updateDropdown();
+      currentProduct = "X-Ultra";
+    }
+
+    function compute() {
+      const p = products[currentProduct];
+      const cedarPodQtyVal = parseFloat(cedarPodQty.value) || 0;
+      const cedarDevQtyVal = parseFloat(cedarDevQty.value) || 0;
+
+      const freeDev = Math.floor(cedarPodQtyVal / 50);
+      cedarFreeDev.textContent = freeDev;
+      const podCost = cedarPodQtyVal * p.podPrice;
+      const devCost = cedarDevQtyVal * p.devPrice;
+      const totalCost = podCost + devCost;
+
+      cedarPodCost.textContent = podCost.toLocaleString();
+      cedarDevCost.textContent = devCost.toLocaleString();
+      cedarTotalCost.textContent = totalCost.toLocaleString();
+
+      const myPodQtyVal = parseFloat(myPodQty.value) || 0;
+      const myPodPriceVal = parseFloat(myPodPrice.value) || 0;
+      const myDevQtyVal = parseFloat(myDevQty.value) || 0;
+      const myDevPriceVal = parseFloat(myDevPrice.value) || 0;
+
+      const myPodTotal = myPodQtyVal * myPodPriceVal;
+      const myDevTotal = myDevQtyVal * myDevPriceVal;
+      const myTotal = myPodTotal + myDevTotal;
+
+      myPodCost.textContent = myPodTotal.toLocaleString();
+      myDevCost.textContent = myDevTotal.toLocaleString();
+      myTotalCost.textContent = myTotal.toLocaleString();
+      myComm.textContent = (myTotal - totalCost).toLocaleString();
+
+      const copyText = document.getElementById("copyText");
+      let text = `${currentProduct}\n${myPodQtyVal} pods X ${myPodPriceVal} = ${myPodTotal.toLocaleString()}`;
+      if (myDevQtyVal > 0) text += `\n${myDevQtyVal} devices X ${myDevPriceVal} = ${myDevTotal.toLocaleString()}`;
+      text += `\nTOTAL COST: ${myTotal.toLocaleString()}`;
+      copyText.value = text;
+    }
+
+    function copyComputation() {
+      const copyText = document.getElementById("copyText");
+      copyText.select();
+      navigator.clipboard.writeText(copyText.value);
+    }
+
+    function resetFields() {
+      cedarPodQty.value = cedarDevQty.value = myPodQty.value = myPodPrice.value =
+        myDevQty.value = myDevPrice.value = 0;
+      compute();
+    }
+
+    updateDropdown();
+    dropdown.addEventListener("change", () => {
+      currentProduct = dropdown.value;
+      compute();
+    });
+
+    document.querySelectorAll("input").forEach(el => el.addEventListener("input", compute));
+  </script>
+</body>
+</html>
